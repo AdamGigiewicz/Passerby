@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\adamg\\source\\repos\\Passserby\\webapi\\webapi.csproj": {}
+    "C:\\Users\\adamg\\source\\repos\\Passerby1\\webapi\\webapi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\adamg\\source\\repos\\Passserby\\webapi\\webapi.csproj": {
+    "C:\\Users\\adamg\\source\\repos\\Passerby1\\webapi\\webapi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\adamg\\source\\repos\\Passserby\\webapi\\webapi.csproj",
+        "projectUniqueName": "C:\\Users\\adamg\\source\\repos\\Passerby1\\webapi\\webapi.csproj",
         "projectName": "webapi",
-        "projectPath": "C:\\Users\\adamg\\source\\repos\\Passserby\\webapi\\webapi.csproj",
+        "projectPath": "C:\\Users\\adamg\\source\\repos\\Passerby1\\webapi\\webapi.csproj",
         "packagesPath": "C:\\Users\\adamg\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\adamg\\source\\repos\\Passserby\\webapi\\obj\\",
+        "outputPath": "C:\\Users\\adamg\\source\\repos\\Passerby1\\webapi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
