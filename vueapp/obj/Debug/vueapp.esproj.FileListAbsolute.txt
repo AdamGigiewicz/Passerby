@@ -1,2 +1,0 @@
-C:\Users\adamg\source\repos\Passserby\vueapp\obj\Debug\vueapp.esproj.SuggestedBindingRedirects.cache
-C:\Users\adamg\source\repos\Passserby\vueapp\obj\Debug\vueapp.esproj.CoreCompileInputs.cache
