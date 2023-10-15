@@ -1,50 +1,35 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+﻿using WebApi.Helpers;
+using WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddJsonFile("appsettings.json");
-var app = builder.Build();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("conntectionString"));
-builder.Services.AddSpaStaticFiles(configuration: options => { options.RootPath = "wwwroot"; });
-builder.Services.AddControllers();
-builder.Services.AddCors(options =>
+// add services to DI container
 {
-    options.AddPolicy("VueCorsPolicy", builder =>
-    {
-        builder
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials()
-            .WithOrigins("https://localhost:5001");
-    });
-});
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.Authority = builder.Configuration["Okta:Authority"];
-    });
-builder.Services.AddMvc(option => option.EnableEndpointRouting = false);
+    var services = builder.Services;
+    services.AddCors();
+    services.AddControllers();
 
-var dbContext = app.Services.GetRequiredService<ApplicationDbContext>();
+    // configure strongly typed settings object
+    services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
+    // configure DI for application services
+    services.AddScoped<IUserService, UserService>();
 }
 
-app.UseCors("VueCorsPolicy");
+var app = builder.Build();
 
-dbContext.Database.EnsureCreated();
-app.UseAuthentication();
-app.UseMvc();
-app.UseRouting();
-app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-app.UseSpaStaticFiles();
-app.UseSpa(builder =>
+// configure HTTP request pipeline
 {
-    if (app.Environment.IsDevelopment())
-    {
-        builder.UseProxyToSpaDevelopmentServer("http://localhost:8080");
-    }
-});
+    // global cors policy
+    app.UseCors(x => x
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+
+    // custom jwt auth middleware
+    app.UseMiddleware<JwtMiddleware>();
+
+    app.MapControllers();
+}
+
+app.Run("http://localhost:4000");
