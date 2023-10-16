@@ -1,0 +1,23 @@
+version: '3.8'
+  
+services:
+  #  web:
+  #    build: app/aspnetapp
+  #  ports:
+  #    - 80:80
+  db:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Root_123
+    ports:
+      - 1433:1433
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    restart: always
+    healthcheck:     
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P'Root_123' -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 10
+      start_period: 10s
+      timeout: 3s
