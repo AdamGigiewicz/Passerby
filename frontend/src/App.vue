@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
-
 import { useAuthStore } from '@/stores';
+import Navbar from '@/components/Navbar.vue';
 
 const authStore = useAuthStore();
 </script>
