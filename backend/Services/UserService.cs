@@ -1,5 +1,5 @@
 namespace WebApi.Services;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,6 +8,7 @@ using System.Text;
 using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Models;
+using WebApi;
 
 public interface IUserService
 {
@@ -18,17 +19,13 @@ public interface IUserService
 
 public class UserService : IUserService
 {
-    // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-    private List<User> _users = new List<User>
-    {
-        new User { id = 1, login = "Test", role = "user", resetDate = new DateTime(), blocked = false, criteria = false, password = "test", salt =null }
-    };
 
     private readonly AppSettings _appSettings;
-
-    public UserService(IOptions<AppSettings> appSettings)
+    private readonly DbSet<User> _users;
+    public UserService(IOptions<AppSettings> appSettings, ApplicationDbContext applicationDbContext)
     {
         _appSettings = appSettings.Value;
+        _users= applicationDbContext.Users;
     }
 
     public AuthenticateResponse Authenticate(AuthenticateRequest model)

@@ -36,7 +36,8 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
     {
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var user = new User();
+        var user = new User { id = 1, login = "Test", role = "user", resetDate = new DateTime(), blocked = false, criteria = false, password = "test", salt =null };
+
         db.Users.Add(user);
         db.SaveChanges();
     }
