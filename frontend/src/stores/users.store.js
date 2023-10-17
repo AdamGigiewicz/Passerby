@@ -20,5 +20,9 @@ export const useUsersStore = defineStore({
       const user = await fetchWrapper.delete(`${baseUrl}/remove/${id}`);
 
     },
+    async getById(id) {
+      const user = await fetchWrapper.get(`${baseUrl}/${id}`);
+
+    },
   }
 });
