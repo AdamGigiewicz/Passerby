@@ -8,15 +8,13 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Login</th>
                     <th>Actions</th> <!-- Trzecia kolumna z przyciskami -->
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="user in users" :key="user.id">
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
+                    <td>{{ user.login }}</td>
                     <td>
                         <!-- Przyciski do edycji i usuniêcia -->
                         <button class="btn btn-primary" @click="editUser(user)">Edit</button>
