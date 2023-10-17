@@ -15,6 +15,10 @@ public interface IUserService
     AuthenticateResponse Authenticate(AuthenticateRequest model);
     IEnumerable<User> GetAll();
     User GetById(int id);
+    void Create(AuthenticateRequest model);
+    void Delete(int id);
+    void Edit(User user);
+    void EditPassword(int id, string oldPassword, string newPassword); 
 }
 
 public class UserService : IUserService
@@ -64,15 +68,16 @@ public class UserService : IUserService
         };
         _users.Add(user);
     }
-    public void EditPassword(User model, string oldPassword, string newPassword)
+
+    public void EditPassword(int id, string oldPassword, string newPassword)
     {
-        var user = _users.SingleOrDefault(x => x.id == model.id);
+        var user = _users.SingleOrDefault(x => x.id == id);
         if (user != null)
         {
-            if (UserPasswordHelper.verifyPassword(oldPassword, model.password))
+            if (UserPasswordHelper.verifyPassword(oldPassword, user.password))
                 user.password = UserPasswordHelper.hashPassword(newPassword);
         };
-        _users.Add(user);
+        _users.Update(user);
     }
 
     public void Edit(User model)
@@ -87,7 +92,7 @@ public class UserService : IUserService
             user.criteria = true;
             user.password = UserPasswordHelper.hashPassword(model.password);
         };
-        _users.Add(user);
+        _users.Update(user);
     }
 
     public void Delete(int id)

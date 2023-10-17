@@ -1,5 +1,5 @@
 ﻿namespace WebApi.Controllers;
-
+using WebApi.Entities;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Helpers;
 using WebApi.Models;
@@ -26,6 +26,31 @@ public class UsersController : ControllerBase
 
         return Ok(response);
     }
+
+    [HttpDelete("remove")]
+    public IActionResult Remove(int id)
+    {
+        _userService.Delete(id);
+        return Ok();
+    }
+
+    [HttpPost("create")]
+    public IActionResult Create(AuthenticateRequest model)
+    {
+      _userService.Create(model);
+      return Ok();
+    }
+   [HttpPost("edit")] 
+    public IActionResult Edit(User user){
+      _userService.Edit(user);
+      return Ok();
+    }
+   
+   [HttpPost("newpassword")]
+   public IActionResult EditPassword(int id, string oldPassword, string newPassword){
+    _userService.EditPassword(id, oldPassword, newPassword);
+    return Ok();
+   }
 
     [Authorize]
     [HttpGet]
