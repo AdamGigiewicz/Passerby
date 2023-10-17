@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import { useAuthStore } from '@/stores';
-import { HomeView, LoginView, AdminView } from '@/views';
+import { HomeView, LoginView, AdminView, AddUser, EditUser} from '@/views';
 
 
 export const router = createRouter({
@@ -10,7 +10,9 @@ export const router = createRouter({
     routes: [
         { path: '/', component: HomeView },
         { path: '/login', component: LoginView },
-        { path: '/admin', component: AdminView } //meta: { requiresAdmin: true } }, 
+        { path: '/admin', component: AdminView }, //meta: { requiresAdmin: true } }, 
+        { path: '/edit', component: EditUser },
+        { path: '/add', component: AddUser },
     ]
 });
 
