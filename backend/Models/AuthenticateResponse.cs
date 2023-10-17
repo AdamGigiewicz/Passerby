@@ -4,19 +4,23 @@ using WebApi.Entities;
 
 public class AuthenticateResponse
 {
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Username { get; set; }
+    public int id { get; set; }
+    public string login{ get; set; }
+    public string role { get; set; }
+    public DateTime resetDate { get; set; }
+    public bool blocked { get; set; }
+    public bool criteria { get; set; }
     public string Token { get; set; }
 
 
     public AuthenticateResponse(User user, string token)
     {
-        Id = user.Id;
-        FirstName = user.FirstName;
-        LastName = user.LastName;
-        Username = user.Username;
+        id = user.id;
+        login = user.login;
+        role = user.role;
+        resetDate = user.resetDate;
+        blocked = user.blocked;
+        criteria = user.criteria;
         Token = token;
     }
 }
