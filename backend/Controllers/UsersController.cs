@@ -61,7 +61,7 @@ public class UsersController : ControllerBase
         return Ok(users);
     }
     
-    [HttpGet("/{id}")]
+    [HttpGet("{id}")]
     public IActionResult GetById(int id)
     {
         return Ok(_userService.GetById(id));
