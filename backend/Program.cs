@@ -1,6 +1,8 @@
 ﻿using WebApi.Helpers;
 using WebApi.Services;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
+using WebApi.Entities;
 var builder = WebApplication.CreateBuilder(args);
 
 // add services to DI container
@@ -9,11 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddCors();
     services.AddControllers();
 
+services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("MojaBazaDanych"));
     // configure strongly typed settings object
     services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
     // configure DI for application services
     services.AddScoped<IUserService, UserService>();
+
 }
 
 var app = builder.Build();
@@ -29,6 +33,13 @@ var app = builder.Build();
     // custom jwt auth middleware
     app.UseMiddleware<JwtMiddleware>();
 
+using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var user = new User();
+        db.Users.Add(user);
+        db.SaveChanges();
+    }
     app.MapControllers();
 }
 
