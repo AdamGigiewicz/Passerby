@@ -60,4 +60,10 @@ public class UsersController : ControllerBase
         var users = _userService.GetAll();
         return Ok(users);
     }
+    
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
+    {
+        return Ok(_userService.GetById(id));
+    }
 }
