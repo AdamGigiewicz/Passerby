@@ -4,11 +4,15 @@ using System.Text.Json.Serialization;
 
 public class User
 {
-    public int Id { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Username { get; set; }
+    public int id { get; set; }
+    public string login { get; set; }
+    public string role { get; set; }
+    public DateTime resetDate { get; set; }
+    public bool blocked { get; set; }
+    public bool criteria { get; set; }
 
     [JsonIgnore]
-    public string Password { get; set; }
+    public string password { get; set; }
+    [JsonIgnore]
+    public byte[] salt { get; set; }
 }
