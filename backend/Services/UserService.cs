@@ -15,10 +15,10 @@ public interface IUserService
     AuthenticateResponse Authenticate(AuthenticateRequest model);
     IEnumerable<User> GetAll();
     User GetById(int id);
-    void Create(AuthenticateRequest model);
+    User Create(AuthenticateRequest model);
     void Delete(int id);
     void Edit(User user);
-    void EditPassword(int id, string oldPassword, string newPassword); 
+    void EditPassword(int id, string oldPassword, string newPassword);
 }
 
 public class UserService : IUserService
@@ -26,9 +26,11 @@ public class UserService : IUserService
 
     private readonly AppSettings _appSettings;
     private readonly DbSet<User> _users;
+    private readonly ApplicationDbContext _context;
     public UserService(IOptions<AppSettings> appSettings, ApplicationDbContext applicationDbContext)
     {
         _appSettings = appSettings.Value;
+        _context = applicationDbContext;
         _users = applicationDbContext.Users;
     }
 
@@ -55,7 +57,7 @@ public class UserService : IUserService
         return _users.FirstOrDefault(x => x.id == id);
     }
 
-    public void Create(AuthenticateRequest model)
+    public User Create(AuthenticateRequest model)
     {
         var user = new User()
         {
@@ -66,7 +68,11 @@ public class UserService : IUserService
             criteria = true,
             password = UserPasswordHelper.hashPassword(model.password)
         };
+
         _users.Add(user);
+        _context.SaveChanges();
+
+        return user;
     }
 
     public void EditPassword(int id, string oldPassword, string newPassword)
@@ -78,6 +84,7 @@ public class UserService : IUserService
                 user.password = UserPasswordHelper.hashPassword(newPassword);
         };
         _users.Update(user);
+        _context.SaveChanges();
     }
 
     public void Edit(User model)
@@ -93,6 +100,7 @@ public class UserService : IUserService
             user.password = UserPasswordHelper.hashPassword(model.password);
         };
         _users.Update(user);
+        _context.SaveChanges();
     }
 
     public void Delete(int id)
@@ -101,6 +109,7 @@ public class UserService : IUserService
         if (user != null)
         {
             _users.Remove(user);
+            _context.SaveChanges();
         }
     }
 

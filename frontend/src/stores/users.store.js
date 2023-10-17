@@ -5,16 +5,20 @@ import { fetchWrapper } from '@/helpers';
 const baseUrl = `${import.meta.env.VITE_API_URL}/users`;
 
 export const useUsersStore = defineStore({
-    id: 'users',
-    state: () => ({
-        users: {}
-    }),
-    actions: {
-        async getAll() {
-            this.users = { loading: true };
-            fetchWrapper.get(baseUrl)
-                .then(users => this.users = users)
-                .catch(error => this.users = { error })
-        }
-    }
+  id: 'users',
+  state: () => ({
+    users: {}
+  }),
+  actions: {
+    async getAll() {
+      this.users = { loading: true };
+      fetchWrapper.get(baseUrl)
+        .then(users => this.users = users)
+        .catch(error => this.users = { error })
+    },
+    async delete(id) {
+      const user = await fetchWrapper.delete(`${baseUrl}/remove/${id}`);
+
+    },
+  }
 });

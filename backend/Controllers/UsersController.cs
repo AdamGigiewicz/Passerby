@@ -27,7 +27,7 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
 
-    [HttpDelete("remove")]
+    [HttpDelete("remove/{id}")]
     public IActionResult Remove(int id)
     {
         _userService.Delete(id);
@@ -37,20 +37,21 @@ public class UsersController : ControllerBase
     [HttpPost("create")]
     public IActionResult Create(AuthenticateRequest model)
     {
-      _userService.Create(model);
-      return Ok();
+        return Ok(_userService.Create(model));
     }
-   [HttpPost("edit")] 
-    public IActionResult Edit(User user){
-      _userService.Edit(user);
-      return Ok();
+    [HttpPost("edit")]
+    public IActionResult Edit(User user)
+    {
+        _userService.Edit(user);
+        return Ok();
     }
-   
-   [HttpPost("newpassword")]
-   public IActionResult EditPassword(int id, string oldPassword, string newPassword){
-    _userService.EditPassword(id, oldPassword, newPassword);
-    return Ok();
-   }
+
+    [HttpPost("newpassword")]
+    public IActionResult EditPassword(int id, string oldPassword, string newPassword)
+    {
+        _userService.EditPassword(id, oldPassword, newPassword);
+        return Ok();
+    }
 
     [Authorize]
     [HttpGet]

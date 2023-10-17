@@ -77,6 +77,7 @@
         </thead>
         <tbody>
             <tr v-for="user in users" :key="user.id">
+                <td>{{ user.id }}</td>
                 <td>{{ user.login }}</td>
                 <td>
                     <button class="btn btn-primary" @click="editUser(user)">Edit</button>
@@ -89,7 +90,6 @@
     <div v-if="users.error" class="text-danger">Error loading users: {{ users.error }}</div>
 </div>
 </template>
-
 <script setup>
     import { ref, computed } from 'vue';
     import { useUsersStore } from '@/stores';
@@ -99,4 +99,7 @@
 
     // Pobieranie u¿ytkowników (mo¿esz zmieniæ to zale¿nie od swojej implementacji)
     usersStore.getAll();
+    function deleteUser(user){
+      usersStore.delete(user.id);
+    }
 </script>

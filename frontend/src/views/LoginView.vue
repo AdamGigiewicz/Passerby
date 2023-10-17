@@ -25,7 +25,7 @@ function onSubmit(values, { setErrors }) {
             password: test
         </div>
         <h2>SIGN IN</h2>
-        <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
+        <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, issubmitting }">
             <div class="form-group">
                 <label>login</label>
                 <Field name="login" type="text" class="form-control" :class="{ 'is-invalid': errors.login}" />
