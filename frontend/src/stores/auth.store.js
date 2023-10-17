@@ -12,8 +12,8 @@ export const useAuthStore = defineStore({
         returnUrl: null
     }),
     actions: {
-        async login(username, password) {
-            const user = await fetchWrapper.post(`${baseUrl}/authenticate`, { username, password });
+        async login(login, password) {
+            const user = await fetchWrapper.post(`${baseUrl}/authenticate`, { login, password });
 
             // update pinia state
             this.user = user;

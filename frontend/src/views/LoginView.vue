@@ -5,15 +5,15 @@ import * as Yup from 'yup';
 import { useAuthStore } from '@/stores';
 
 const schema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required')
+    login: Yup.string().required('login is required'),
+    password: Yup.string().required('password is required')
 });
 
 function onSubmit(values, { setErrors }) {
     const authStore = useAuthStore();
-    const { username, password } = values;
+    const { login, password} = values;
 
-    return authStore.login(username, password)
+    return authStore.login(login, password)
         .catch(error => setErrors({ apiError: error }));
 }
 </script>
@@ -21,25 +21,25 @@ function onSubmit(values, { setErrors }) {
 <template>
     <div>
         <div class="alert alert-info">
-            Username: test<br />
-            Password: test
+            login: test<br />
+            password: test
         </div>
-        <h2>Login</h2>
+        <h2>SIGN IN</h2>
         <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
             <div class="form-group">
-                <label>Username</label>
-                <Field name="username" type="text" class="form-control" :class="{ 'is-invalid': errors.username }" />
-                <div class="invalid-feedback">{{errors.username}}</div>
+                <label>login</label>
+                <Field name="login" type="text" class="form-control" :class="{ 'is-invalid': errors.login}" />
+                <div class="invalid-feedback">{{errors.login}}</div>
             </div>            
             <div class="form-group">
-                <label>Password</label>
+                <label>password</label>
                 <Field name="password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
                 <div class="invalid-feedback">{{errors.password}}</div>
             </div>            
             <div class="form-group">
                 <button class="btn btn-primary" :disabled="isSubmitting">
                     <span v-show="isSubmitting" class="spinner-border spinner-border-sm mr-1"></span>
-                    Login
+                    sign in 
                 </button>
             </div>
             <div v-if="errors.apiError" class="alert alert-danger mt-3 mb-0">{{errors.apiError}}</div>
