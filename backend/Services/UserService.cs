@@ -62,7 +62,7 @@ public class UserService : IUserService
         var user = new User()
         {
             login = model.login,
-            role = "user",
+            role = true,
             resetDate = DateTime.Now,
             blocked = false,
             criteria = true,
@@ -89,11 +89,12 @@ public class UserService : IUserService
 
     public void Edit(User model)
     {
+      Console.WriteLine("start");
         var user = _users.SingleOrDefault(x => x.id == model.id);
         if (user != null)
         {
             user.login = model.login;
-            user.role = "user";
+            user.role = model.role;
             user.resetDate = DateTime.Now;
             user.blocked = false;
             user.criteria = true;

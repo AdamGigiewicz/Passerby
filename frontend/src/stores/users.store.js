@@ -22,7 +22,11 @@ export const useUsersStore = defineStore({
     },
     async getById(id) {
       const user = await fetchWrapper.get(`${baseUrl}/${id}`);
-
+      return user;
+    },
+    async edit(login, password  ) {
+      //const { id, login, role, resetDate, blocked, criteria, password } = user;
+      return await fetchWrapper.put(`${baseUrl}/edit`, { login, password });
     },
   }
 });

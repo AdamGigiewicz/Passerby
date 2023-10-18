@@ -6,12 +6,12 @@ public class User
 {
     public int id { get; set; }
     public string login { get; set; }
-    public string role { get; set; }
+    public bool role { get; set; }
     public DateTime resetDate { get; set; }
     public bool blocked { get; set; }
     public bool criteria { get; set; }
 
-    [JsonIgnore]
+//[JsonIgnore]
     public string password { get; set; }
     [JsonIgnore]
     public byte[] salt { get; set; }

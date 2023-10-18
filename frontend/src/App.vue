@@ -7,6 +7,7 @@ const authStore = useAuthStore();
 </script>
 
 <template>
+  <suspense>
     <div class="app-container bg-light">
         <nav v-show="authStore.user" class="navbar navbar-expand navbar-dark bg-dark">
             <div class="navbar-nav">
@@ -18,6 +19,7 @@ const authStore = useAuthStore();
             <RouterView />
         </div>
     </div>
+  </suspense>
 </template>
 
 <style>

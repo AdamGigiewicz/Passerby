@@ -39,10 +39,11 @@ public class UsersController : ControllerBase
     {
         return Ok(_userService.Create(model));
     }
-    [HttpPost("edit")]
-    public IActionResult Edit(User user)
+    [HttpPut("edit")]
+    public IActionResult Edit(AuthenticateRequest model)
     {
-        _userService.Edit(user);
+      Console.WriteLine("begin");
+       // _userService.Edit(user);
         return Ok();
     }
 
