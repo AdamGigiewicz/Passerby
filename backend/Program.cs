@@ -4,11 +4,19 @@ using WebApi.Helpers;
 using WebApi.Services;
 using WebApi.Authorization;
 using WebApi.Repositories;
+using WebApi.Exceptions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 var services = builder.Services;
 services.AddCors();
-services.AddControllers();
+
+services.AddControllers(options => {
+  options.Filters.Add<IdentityExceptionFilter>();
+  options.Filters.Add<NotFoundExceptionFilter>();
+  options.Filters.Add<ValidationExceptionFilter>();
+});
+
 services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("db"));
 services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 services.AddScoped<IUserService, UserService>();
@@ -31,7 +39,6 @@ using (var scope = app.Services.CreateScope())
         id = 1,
         login = "test",
         isAdmin = true,
-        passwordResetDate = new DateTime(),
         isBlocked = false,
         passwordCriteria = false,
         password = UserPasswordHelper.hashPassword("test"),

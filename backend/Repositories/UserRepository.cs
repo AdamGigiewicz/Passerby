@@ -12,7 +12,7 @@ public interface IUserRepository
     User FindById(int id);
     User FindByCredentials(string login, string password);
     void Update(User user);
-    void Delete(int id);
+    void Delete(User user);
 }
 
 public class UserRepository : IUserRepository
@@ -39,37 +39,21 @@ public class UserRepository : IUserRepository
 
     public User FindById(int id)
     {
-        return _users.SingleOrDefault(user => user.id == id);
-    }
+        return _users.SingleOrDefault(user => user.id == id);    }
 
     public User FindByCredentials(string login, string password)
     {
         return _users.SingleOrDefault(user => user.login == login && UserPasswordHelper.verifyPassword(password, user.password));
     }
-
     public void Update(User user)
     {
-        var persistedUser = FindById(user.id);
-        if (persistedUser != null)
-        {
-            persistedUser.login = user.login;
-            persistedUser.isAdmin = user.isAdmin;
-            persistedUser.passwordResetDate = user.passwordResetDate;
-            persistedUser.isBlocked = user.isBlocked;
-            persistedUser.passwordCriteria = user.passwordCriteria;
-            persistedUser.password = user.password;
-            _users.Update(user);
-            _context.SaveChanges();
-        }
+        _users.Update(user);
+        _context.SaveChanges();
     }
 
-    public void Delete(int id)
+    public void Delete(User user)
     {
-        var persistedUser = FindById(id);
-        if (persistedUser != null)
-        {
-            _users.Remove(persistedUser);
-            _context.SaveChanges();
-        }
+        _users.Remove(user);
+        _context.SaveChanges();
     }
 }

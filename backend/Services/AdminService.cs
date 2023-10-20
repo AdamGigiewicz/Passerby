@@ -4,6 +4,7 @@ using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Models;
 using WebApi.Repositories;
+using WebApi.Exceptions;
 
 public interface IAdminService
 {
@@ -25,11 +26,10 @@ public class AdminService : IAdminService
 
     public void Create(UserCredentials credentials)
     {
-        var user = new User()
+        User user = new User()
         {
             login = credentials.login,
             isAdmin = false,
-            passwordResetDate = DateTime.Now,
             isBlocked = false,
             passwordCriteria = true,
             password = UserPasswordHelper.hashPassword(credentials.password)
@@ -44,17 +44,24 @@ public class AdminService : IAdminService
 
     public User GetById(int id)
     {
-        return _userRepository.FindById(id);
+        var user = _userRepository.FindById(id);
+        if (user == null) throw new NotFoundException();
+        return user;
     }
 
     public void Edit(User user)
     {
-        user.password = UserPasswordHelper.hashPassword(user.password);
+        User persistedUser = GetById(user.id);
+        persistedUser.isAdmin = user.isAdmin;
+        persistedUser.isBlocked = user.isBlocked;
+        persistedUser.passwordCriteria = user.passwordCriteria;
+        persistedUser.login = user.login;
+        persistedUser.password = UserPasswordHelper.hashPassword(user.password);
         _userRepository.Update(user);
     }
 
     public void Delete(int id)
     {
-        _userRepository.Delete(id);
+        _userRepository.Delete(GetById(id));
     }
 }

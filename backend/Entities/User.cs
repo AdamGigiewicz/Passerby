@@ -9,8 +9,5 @@ public class User
     public bool isAdmin { get; set; }
     public bool isBlocked { get; set; }
     public bool passwordCriteria { get; set; }
-    public DateTime passwordResetDate { get; set; }
-
-    [JsonIgnore]
     public string password { get; set; }
 }

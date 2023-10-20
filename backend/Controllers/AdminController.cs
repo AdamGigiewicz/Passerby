@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Services;
 using WebApi.Authorization;
+using WebApi.Repositories;
 
 [ApiController]
 [Route("[controller]")]
@@ -28,8 +29,7 @@ public class AdminController : ControllerBase
     [HttpGet]
     public IActionResult GetAll()
     {
-        var users = _adminService.GetAll();
-        return Ok(users);
+        return Ok(_adminService.GetAll());
     }
 
     [HttpGet("{id}")]
@@ -51,5 +51,4 @@ public class AdminController : ControllerBase
         _adminService.Delete(id);
         return Ok();
     }
-
 }

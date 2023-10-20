@@ -8,10 +8,11 @@ using System.Text;
 using WebApi.Helpers;
 using WebApi.Models;
 using WebApi.Repositories;
+using WebApi.Exceptions;
 
 public interface IUserService
 {
-    LoggedUser Login(UserCredentials form);
+    LoggedUser SignIn(UserCredentials form);
     void EditPassword(UserChangePassword form);
 }
 
@@ -26,26 +27,22 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public LoggedUser Login(UserCredentials form)
+    public LoggedUser SignIn(UserCredentials form)
     {
-        LoggedUser loggedUser = null;
         var user = _userRepository.FindByCredentials(form.login, form.password);
-        if (user != null)
-        {
-            string userToken = generateJwtToken(user.id.ToString());
-            loggedUser = new LoggedUser(user.id, userToken);
-        }
-        return loggedUser;
+        if (user == null || user.isBlocked) throw new IdentityException();
+        string userToken = generateJwtToken(user.id.ToString());
+        return new LoggedUser(user.id, userToken);
     }
 
     public void EditPassword(UserChangePassword form)
     {
         var user = _userRepository.FindById(form.id);
-        if (user != null && UserPasswordHelper.verifyPassword(form.oldPassword, user.password) && UserPasswordHelper.validatePassword(form.newPassword))
-        {
-            user.password = UserPasswordHelper.hashPassword(form.newPassword);
-            _userRepository.Update(user);
-        };
+        if (user == null || user.isBlocked) throw new IdentityException();
+        if (UserPasswordHelper.verifyPassword(form.oldPassword, user.password)) throw new IdentityException();
+        if (UserPasswordHelper.validatePassword(form.newPassword)) throw new ValidationException();
+        user.password = UserPasswordHelper.hashPassword(form.newPassword);
+        _userRepository.Update(user);
     }
 
     private string generateJwtToken(string userId)
