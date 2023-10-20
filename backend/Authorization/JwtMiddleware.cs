@@ -42,7 +42,9 @@ public class JwtMiddleware
             }, out SecurityToken validatedToken);
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
-            context.Items["User"] = userService.GetById(userId);
+            context.Items["UserId"] = userId;
+            bool isAdmin = userService.GetById(userId).isAdmin;
+            if (isAdmin) context.Items["UserIsAdmin"] = isAdmin;
         }
         catch
         {

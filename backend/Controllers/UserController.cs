@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 using WebApi.Services;
 using WebApi.Authorization;
-using WebApi.Repositories;
+using WebApi.Entities;
 
 [ApiController]
 [Route("[controller]")]
@@ -17,17 +17,17 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost("signin")]
+    [HttpPost]
     public IActionResult SignIn(UserCredentials form)
     {
-        return Ok(_userService.SignIn(form));
+        return Ok(_userService.SignIn(form.login, form.password));
     }
 
     [AuthorizeUser]
-    [HttpPatch("password")]
+    [HttpPatch]
     public IActionResult EditPassword(UserChangePassword form)
     {
-        _userService.EditPassword(form);
+        _userService.EditPassword((int)HttpContext.Items["UserId"], form.oldPassword, form.newPassword);
         return Ok();
     }
 }
