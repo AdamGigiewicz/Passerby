@@ -13,7 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
     router.push(this.returnUrl || '/');
   }
   async function editPassword(oldPassword, newPassword) {
-    const userToken = await fetchWrapper.post(baseUrl, { oldPassword, newPassword});
+    const userToken = await fetchWrapper.post(baseUrl, { oldPassword, newPassword });
     token.value = userToken;
     router.push(this.returnUrl || '/');
   }
@@ -21,4 +21,5 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = "";
     router.push('/login');
   }
+  return { token, signin, editPassword, signout }
 });

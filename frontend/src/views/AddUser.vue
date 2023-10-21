@@ -2,7 +2,7 @@
 import { Form, Field } from 'vee-validate';
 import * as Yup from 'yup';
 
-import { useAuthStore } from '@/stores';
+import { useAdminStore } from '@/stores';
 
 const schema = Yup.object().shape({
     login: Yup.string().required('login is required'),
@@ -10,10 +10,10 @@ const schema = Yup.object().shape({
 });
 
 function onSubmit(values, { setErrors }) {
-    const authStore = useAuthStore();
+    const adminstore = useAdminStore();
     const { login, password} = values;
 
-    return authStore.create(login, password)
+    return adminstore.add(login, password)
         .catch(error => setErrors({ apiError: error }));
 }
 </script>
