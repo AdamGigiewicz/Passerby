@@ -27,7 +27,12 @@ public class UserController : ControllerBase
     [HttpPatch]
     public IActionResult EditPassword(UserChangePassword form)
     {
-        _userService.EditPassword((int)HttpContext.Items["UserId"], form.oldPassword, form.newPassword);
+        _userService.EditPassword(GetUser().id, form.oldPassword, form.newPassword);
         return Ok();
+    }
+
+    private User GetUser()
+    {
+        return (User)HttpContext.Items["User"];
     }
 }

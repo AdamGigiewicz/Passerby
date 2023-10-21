@@ -57,7 +57,7 @@ public class AdminService : IAdminService
         persistedUser.passwordCriteria = user.passwordCriteria;
         persistedUser.login = user.login;
         persistedUser.password = UserPasswordHelper.hashPassword(user.password);
-        _userRepository.Update(user);
+        _userRepository.Update(persistedUser);
     }
 
     public void Delete(int id)

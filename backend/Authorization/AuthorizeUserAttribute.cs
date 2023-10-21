@@ -9,7 +9,7 @@ public class AuthorizeUserAttribute : Attribute, IAuthorizationFilter
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        if (context.HttpContext.Items["UserId"] == null)
+        if (context.HttpContext.Items["User"] == null)
         {
             context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
         }

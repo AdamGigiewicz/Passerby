@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using WebApi.Services;
+using WebApi.Repositories;
 using WebApi.Helpers;
 
 public class JwtMiddleware
@@ -18,15 +18,15 @@ public class JwtMiddleware
         _appSettings = appSettings.Value;
     }
 
-    public async Task Invoke(HttpContext context, IAdminService userService)
+    public async Task Invoke(HttpContext context, IUserRepository userRepository)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         if (token != null)
-            attachUserToContext(context, userService, token);
+            attachUserToContext(context, userRepository, token);
         await _next(context);
     }
 
-    private void attachUserToContext(HttpContext context, IAdminService userService, string token)
+    private void attachUserToContext(HttpContext context, IUserRepository userRepository, string token)
     {
         try
         {
@@ -42,9 +42,7 @@ public class JwtMiddleware
             }, out SecurityToken validatedToken);
             var jwtToken = (JwtSecurityToken)validatedToken;
             var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
-            context.Items["UserId"] = userId;
-            bool isAdmin = userService.GetById(userId).isAdmin;
-            if (isAdmin) context.Items["UserIsAdmin"] = isAdmin;
+            context.Items["User"] = userRepository.FindById(userId);
         }
         catch
         {
