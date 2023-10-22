@@ -5,11 +5,13 @@ import { ref } from 'vue';
 const baseUrl = `${import.meta.env.VITE_API_URL}/user`;
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref();
+  const token = ref(JSON.parse(localStorage.getItem('token')));
+  const returnUrl = ref();
 
   async function signin(login, password) {
     token.value = await fetchWrapper.post(baseUrl, { login, password });
-    router.push(this.returnUrl || '/');
+    localStorage.setItem('token', JSON.stringify(token.value));
+    router.push(returnUrl.value || '/');
   }
 
   async function editPassword(oldPassword, newPassword) {
@@ -17,7 +19,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function signout() {
-    token.value = "";
+    token.value = null;
+    localStorage.removeItem('token');
     router.push('/login');
   }
 
