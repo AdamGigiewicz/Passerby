@@ -1,128 +1,55 @@
 namespace WebApi.Services;
-using Microsoft.EntityFrameworkCore;
+
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using WebApi.Entities;
 using WebApi.Helpers;
 using WebApi.Models;
-using WebApi;
+using WebApi.Repositories;
+using WebApi.Exceptions;
 
 public interface IUserService
 {
-    AuthenticateResponse Authenticate(AuthenticateRequest model);
-    IEnumerable<User> GetAll();
-    User GetById(int id);
-    User Create(AuthenticateRequest model);
-    void Delete(int id);
-    void Edit(User user);
-    void EditPassword(int id, string oldPassword, string newPassword);
+    string SignIn(string login, string password);
+    void EditPassword(int userId, string oldPassword, string newPassword);
 }
 
 public class UserService : IUserService
 {
-
     private readonly AppSettings _appSettings;
-    private readonly DbSet<User> _users;
-    private readonly ApplicationDbContext _context;
-    public UserService(IOptions<AppSettings> appSettings, ApplicationDbContext applicationDbContext)
+    private readonly IUserRepository _userRepository;
+
+    public UserService(IOptions<AppSettings> appSettings, IUserRepository userRepository)
     {
         _appSettings = appSettings.Value;
-        _context = applicationDbContext;
-        _users = applicationDbContext.Users;
+        _userRepository = userRepository;
     }
 
-    public AuthenticateResponse Authenticate(AuthenticateRequest model)
+    public string SignIn(string login, string password)
     {
-        var user = _users.SingleOrDefault(x => x.login == model.login && x.password == model.password);
-
-        // return null if user not found
-        if (user == null) return null;
-
-        // authentication successful so generate jwt token
-        var token = generateJwtToken(user);
-
-        return new AuthenticateResponse(user, token);
+        var user = _userRepository.FindByCredentials(login, password);
+        if (user == null || user.isBlocked) throw new IdentityException();
+        return generateJwtToken(user.id.ToString());
     }
 
-    public IEnumerable<User> GetAll()
+    public void EditPassword(int userId, string oldPassword, string newPassword)
     {
-        return _users;
+        var user = _userRepository.FindById(userId);
+        if (user == null || user.isBlocked! || !UserPasswordHelper.verifyPassword(oldPassword, user.password)) throw new IdentityException();
+        if (!UserPasswordHelper.validatePassword(newPassword)) throw new ValidationException();
+        user.password = UserPasswordHelper.hashPassword(newPassword);
+        _userRepository.Update(user);
     }
 
-    public User GetById(int id)
+    private string generateJwtToken(string userId)
     {
-        return _users.FirstOrDefault(x => x.id == id);
-    }
-
-    public User Create(AuthenticateRequest model)
-    {
-        var user = new User()
-        {
-            login = model.login,
-            role = "user",
-            resetDate = DateTime.Now,
-            blocked = false,
-            criteria = true,
-            password = UserPasswordHelper.hashPassword(model.password)
-        };
-
-        _users.Add(user);
-        _context.SaveChanges();
-
-        return user;
-    }
-
-    public void EditPassword(int id, string oldPassword, string newPassword)
-    {
-        var user = _users.SingleOrDefault(x => x.id == id);
-        if (user != null)
-        {
-            if (UserPasswordHelper.verifyPassword(oldPassword, user.password))
-                user.password = UserPasswordHelper.hashPassword(newPassword);
-        };
-        _users.Update(user);
-        _context.SaveChanges();
-    }
-
-    public void Edit(User model)
-    {
-        var user = _users.SingleOrDefault(x => x.id == model.id);
-        if (user != null)
-        {
-            user.login = model.login;
-            user.role = "user";
-            user.resetDate = DateTime.Now;
-            user.blocked = false;
-            user.criteria = true;
-            user.password = UserPasswordHelper.hashPassword(model.password);
-        };
-        _users.Update(user);
-        _context.SaveChanges();
-    }
-
-    public void Delete(int id)
-    {
-        var user = _users.SingleOrDefault(x => x.id == id);
-        if (user != null)
-        {
-            _users.Remove(user);
-            _context.SaveChanges();
-        }
-    }
-
-    // helper methods
-
-    private string generateJwtToken(User user)
-    {
-        // generate token that is valid for 7 days
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("id", user.id.ToString()) }),
+            Subject = new ClaimsIdentity(new[] { new Claim("id", userId) }),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };

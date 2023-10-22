@@ -81,7 +81,7 @@
                 <td>{{ user.login }}</td>
                 <td>
                     <button class="btn btn-primary" @click="editUser(user)">Edit</button>
-                    <button class="btn btn-danger" @click="deleteUser(user)">Delete</button>
+                    <button class="btn btn-danger" @click="removeUser(user)">Delete</button>
                 </td>
             </tr>
         </tbody>
@@ -92,14 +92,13 @@
 </template>
 <script setup>
     import { ref, computed } from 'vue';
-    import { useUsersStore } from '@/stores';
+    import { useAdminStore } from '@/stores';
 
-    const usersStore = useUsersStore();
-    const users = computed(() => usersStore.users);
+    const adminStore = useAdminStore();
+    const users = computed(() => adminStore.users);
 
-    // Pobieranie u¿ytkowników (mo¿esz zmieniæ to zale¿nie od swojej implementacji)
-    usersStore.getAll();
-    function deleteUser(user){
-      usersStore.delete(user.id);
+    adminStore.getAll();
+    function removeUser(user){
+      adminStore.remove(user.id);
     }
 </script>

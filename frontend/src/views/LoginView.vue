@@ -1,5 +1,6 @@
 <script setup>
 import { Form, Field } from 'vee-validate';
+import {storeToRefs} from 'pinia';
 import * as Yup from 'yup';
 
 import { useAuthStore } from '@/stores';
@@ -10,10 +11,8 @@ const schema = Yup.object().shape({
 });
 
 function onSubmit(values, { setErrors }) {
-    const authStore = useAuthStore();
-    const { login, password} = values;
-
-    return authStore.login(login, password)
+    const {login, password} = values;
+    return useAuthStore().signin(login, password)
         .catch(error => setErrors({ apiError: error }));
 }
 </script>
