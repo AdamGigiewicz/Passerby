@@ -14,10 +14,10 @@ export const useAuthStore = defineStore('auth', () => {
     const userToken = await fetchWrapper.post(baseUrl, { oldPassword, newPassword });
     token.value = userToken;
     router.push(this.returnUrl || '/');
-  }
+
   function signout() {
     token.value = "";
     router.push('/login');
   }
-  return { token, signin, editPassword,test, signout }
-});
+  return { token, signin, editPassword, signout }
+}});
