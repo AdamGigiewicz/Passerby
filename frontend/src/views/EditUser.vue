@@ -41,10 +41,6 @@
                 <label>Criteria</label>
                 <input type="checkbox" value="" />
             </div>
-            <div class="form-group">
-                <label>Criteria</label>
-                <input type="checkbox" value="" />
-            </div>
             <VueDatePicker v-model="date"></VueDatePicker>
             <div class="form-group">
                 <button class="btn btn-primary">
