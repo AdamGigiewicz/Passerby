@@ -45,3 +45,26 @@
     </div>
 </template>
 
+
+<style scoped>
+    .user-form {
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-check-label {
+        padding-left: 5px;
+    }
+
+    .date-picker {
+        width: 100%;
+    }
+</style>
