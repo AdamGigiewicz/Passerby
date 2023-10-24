@@ -5,13 +5,15 @@
       <template v-slot="{ errors, isSubmitting }">
         <div class="form-group">
           <label for="login">Login</label>
-          <Field name="login" type="text" class="form-control" v-model="user.login" :class="{ 'is-invalid': errors.login }" />
+          <Field name="login" type="text" class="form-control" v-model="user.login"
+            :class="{ 'is-invalid': errors.login }" />
           <div class="invalid-feedback">{{ errors.login }}</div>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <Field name="password" type="password" class="form-control" v-model="user.password" :class="{ 'is-invalid': errors.password}"/>
-            <div class="invalid-feedback">{{ errors.password }}</div>
+          <Field name="password" type="password" class="form-control" v-model="user.password"
+            :class="{ 'is-invalid': errors.password }" />
+          <div class="invalid-feedback">{{ errors.password }}</div>
         </div>
         <div class="form-group form-check">
           <input type="checkbox" id="isAdmin" class="form-check-input" v-model="user.isAdmin" />
@@ -55,7 +57,7 @@ const user = ref(await adminStore.getById(1))
 
 function onSubmit({ setErrors }) {
   return adminStore.edit(user.value)
- //   .catch(error => setErrors({ apiError: error }));
+  //   .catch(error => setErrors({ apiError: error }));
 }
 
 </script>

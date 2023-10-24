@@ -1,70 +1,68 @@
-<script setup>
-    import { Form, Field } from 'vee-validate';
-    import * as Yup from 'yup';
-
-    import { useAdminStore } from '@/stores';
-
-    const schema = Yup.object().shape({
-        login: Yup.string().required('login is required'),
-        password: Yup.string().required('password is required')
-    });
-
-    function onSubmit(values, { setErrors }) {
-        const adminstore = useAdminStore();
-        const { login, password } = values;
-
-        return adminstore.add(login, password)
-            .catch(error => setErrors({ apiError: error }));
-    }
-</script>
-
 <template>
-    <div class="user-form">
-        <h2>Add User</h2>
-        <Form @submit="onSubmit" :validation-schema="schema">
-            <template v-slot="{ errors, isSubmitting }">
-                <div class="form-group">
-                    <label for="login">Login</label>
-                    <Field name="login" type="text" class="form-control" :class="{ 'is-invalid': errors.login }" />
-                    <div class="invalid-feedback">{{ errors.login }}</div>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <Field name="password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
-                    <div class="invalid-feedback">{{ errors.password }}</div>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-primary" :disabled="isSubmitting">
-                        <span v-show="isSubmitting" class="spinner-border spinner-border-sm mr-1"></span>
-                        Add User
-                    </button>
-                </div>
-                <div v-if="errors.apiError" class="alert alert-danger mt-3 mb-0">{{ errors.apiError }}</div>
-            </template>
-        </Form>
-    </div>
+  <div class="user-form">
+    <h2>Add User</h2>
+    <Form @submit="onSubmit" :validation-schema="schema">
+      <template v-slot="{ errors, isSubmitting }">
+        <div class="form-group">
+          <label for="login">Login</label>
+          <Field name="login" type="text" class="form-control" :class="{ 'is-invalid': errors.login }" />
+          <div class="invalid-feedback">{{ errors.login }}</div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <Field name="password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
+          <div class="invalid-feedback">{{ errors.password }}</div>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" :disabled="isSubmitting">
+            <span v-show="isSubmitting" class="spinner-border spinner-border-sm mr-1"></span>
+            Add User
+          </button>
+        </div>
+        <div v-if="errors.apiError" class="alert alert-danger mt-3 mb-0">{{ errors.apiError }}</div>
+      </template>
+    </Form>
+  </div>
 </template>
 
+<script setup>
+import { Form, Field } from 'vee-validate';
+import { useAdminStore } from '@/stores';
+import * as Yup from 'yup';
+
+const schema = Yup.object().shape({
+  login: Yup.string().required('login is required'),
+  password: Yup.string().required('password is required')
+});
+
+function onSubmit(values, { setErrors }) {
+  const adminstore = useAdminStore();
+  const { login, password } = values;
+
+  return adminstore.add(login, password)
+    .catch(error => setErrors({ apiError: error }));
+}
+</script>
 
 <style scoped>
-    .user-form {
-        max-width: 300px;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #fff;
-    }
+.user-form {
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+}
 
-    .form-group {
-        margin-bottom: 15px;
-    }
+.form-group {
+  margin-bottom: 15px;
+}
 
-    .form-check-label {
-        padding-left: 5px;
-    }
+.form-check-label {
+  padding-left: 5px;
+}
 
-    .date-picker {
-        width: 100%;
-    }
+.date-picker {
+  width: 100%;
+}
 </style>

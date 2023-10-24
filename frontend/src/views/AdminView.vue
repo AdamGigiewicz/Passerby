@@ -96,13 +96,13 @@
     import { useAdminStore } from '@/stores';
     import { storeToRefs } from 'pinia';
 
-
     const adminStore = useAdminStore();
     const { users } = storeToRefs(adminStore);
 
     adminStore.getAll();
     function removeUser(user){
       adminStore.remove(user.id);
+      adminStore.getAll();
     }
 
 </script>
