@@ -5,8 +5,16 @@ import { ref } from 'vue';
 const baseUrl = `${import.meta.env.VITE_API_URL}/user`;
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref(JSON.parse(localStorage.getItem('token')));
+  const token = ref("");
   const returnUrl = ref();
+  init();
+
+  function init() {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken != null) {
+      token.value = JSON.parse(storedToken).token
+    }
+  }
 
   async function signin(login, password) {
     token.value = await fetchWrapper.post(baseUrl, { login, password });

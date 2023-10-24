@@ -12,7 +12,7 @@ using WebApi.Exceptions;
 
 public interface IUserService
 {
-    string SignIn(string login, string password);
+    LoggedUser SignIn(string login, string password);
     void EditPassword(int userId, string oldPassword, string newPassword);
 }
 
@@ -27,11 +27,11 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public string SignIn(string login, string password)
+    public LoggedUser SignIn(string login, string password)
     {
         var user = _userRepository.FindByCredentials(login, password);
         if (user == null || user.isBlocked) throw new IdentityException();
-        return generateJwtToken(user.id.ToString());
+        return new LoggedUser(generateJwtToken(user.id.ToString()));
     }
 
     public void EditPassword(int userId, string oldPassword, string newPassword)
