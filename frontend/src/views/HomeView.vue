@@ -1,28 +1,6 @@
 <template>
   <div class="password-change">
     <h1>Hi!</h1>
-    <div class="password-change-form">
-      <h2>Change Password</h2>
-      <form @submit.prevent="changePassword">
-        <div class="form-group">
-          <div class="form-item">
-            <label for="currentPassword">Current Password </label>
-            <input type="password" id="currentPassword" v-model="currentPassword" required>
-          </div>
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="newPassword">New Password</label>
-          <input type="password" id="newPassword" v-model="newPassword" required>
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="confirmPassword">Confirm New Password</label>
-          <input type="password" id="confirmPassword" v-model="confirmPassword" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Change Password</button>
-      </form>
-    </div>
   </div>
 </template>
 
