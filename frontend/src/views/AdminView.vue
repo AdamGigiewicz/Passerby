@@ -93,12 +93,15 @@
 <script setup>
     import { ref, computed } from 'vue';
     import { useAdminStore } from '@/stores';
+    import { storeToRefs } from 'pinia';
+
 
     const adminStore = useAdminStore();
-    const users = computed(() => adminStore.users);
+    const { users } = storeToRefs(adminStore);
 
     adminStore.getAll();
     function removeUser(user){
       adminStore.remove(user.id);
     }
+
 </script>
