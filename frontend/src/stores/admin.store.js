@@ -8,7 +8,7 @@ export const useAdminStore = defineStore('admin', () => {
   const users = ref()
 
   async function add(login, password) {
-    await fetchWrapper.post(baseUrl);
+    await fetchWrapper.post(baseUrl, { login, password });
   }
 
   async function getAll() {
@@ -18,17 +18,17 @@ export const useAdminStore = defineStore('admin', () => {
   }
 
   async function getById(id) {
-    await fetchWrapper.get(`${baseUrl}/${id}`);
+    return await fetchWrapper.get(`${baseUrl}/${id}`);
   }
-  
+
   async function edit(user) {
-    const {id, login, password, passwordCriteria, isAdmin, isBlocked} = user;
-    await fetchWrapper.put(baseUrl, {id, login, password, passwordCriteria, isAdmin, isBlocked});
+    const { id, login, password, passwordCriteria, isAdmin, isBlocked } = user;
+    await fetchWrapper.put(baseUrl, { id, login, password, passwordCriteria, isAdmin, isBlocked });
   }
 
   async function remove(id) {
-    await fetchWrapper.delete(`${baseUrl}/${id}`);
+    await fetchWrapper.delete(`${baseUrl}/${id}`, { id });
   }
 
-  return {users, add, getAll, getById, edit, remove}
+  return { users, add, getAll, getById, edit, remove }
 });

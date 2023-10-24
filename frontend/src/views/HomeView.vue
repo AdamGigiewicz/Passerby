@@ -31,7 +31,7 @@
 
 <template>
     <div class="password-change">
-        <h1>Hi {{authUser?.firstName}}!</h1>
+        <h1>Hi!</h1>
 
         <div class="password-change-form">
             <h2>Change Password</h2>

@@ -71,6 +71,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Login</th>
                 <th>Actions</th>
             </tr>
