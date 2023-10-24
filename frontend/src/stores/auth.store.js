@@ -5,20 +5,25 @@ import { ref } from 'vue';
 const baseUrl = `${import.meta.env.VITE_API_URL}/user`;
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref("");
+  const token = ref(null);
   const returnUrl = ref();
-  init();
+  loadToken();
 
-  function init() {
+  function loadToken() {
     const storedToken = localStorage.getItem('token');
     if (storedToken != null) {
-      token.value = JSON.parse(storedToken).token
+      token.value = storedToken
     }
   }
 
+  function saveToken(tokenToSave) {
+    localStorage.setItem('token', tokenToSave);
+  }
+
   async function signin(login, password) {
-    token.value = await fetchWrapper.post(baseUrl, { login, password });
-    localStorage.setItem('token', JSON.stringify(token.value));
+    const receivedToken = (await fetchWrapper.post(baseUrl, { login, password })).token;
+    saveToken(receivedToken)
+    loadToken();
     router.push(returnUrl.value || '/');
   }
 

@@ -21,12 +21,9 @@ function request(method) {
     }
 }
 
-// helper functions
-
 function authHeader(url) {
-    // return auth header with jwt if user is logged in and request is to the api url
     const { token } = useAuthStore();
-    const isLoggedIn = token.value != "";
+    const isLoggedIn = token != null;
     const isApiUrl = url.startsWith(import.meta.env.VITE_API_URL);
     if (isLoggedIn && isApiUrl) {
         return { Authorization: `Bearer ${token}` };
@@ -39,15 +36,9 @@ function handleResponse(response) {
     return response.text().then(text => {
         const data = text && JSON.parse(text);
         if (!response.ok) {
-            const { token, logout } = useAuthStore();
-            if ([401, 403].includes(response.status) && token) {
-                logout();
-            }
-
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
         }
-
         return data;
     });
-}    
+}
