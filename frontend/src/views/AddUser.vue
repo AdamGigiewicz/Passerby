@@ -28,6 +28,7 @@
 <script setup>
 import { Form, Field } from 'vee-validate';
 import { useAdminStore } from '@/stores';
+import { router } from '@/helpers';
 import * as Yup from 'yup';
 
 const schema = Yup.object().shape({
@@ -39,8 +40,9 @@ function onSubmit(values, { setErrors }) {
   const adminstore = useAdminStore();
   const { login, password } = values;
 
-  return adminstore.add(login, password)
+  adminstore.add(login, password)
     .catch(error => setErrors({ apiError: error }));
+  router.push('/admin')
 }
 </script>
 

@@ -46,6 +46,8 @@ import { Form, Field } from 'vee-validate';
 import * as Yup from 'yup';
 import { ref } from 'vue';
 import { useAdminStore } from '@/stores';
+import { storeToRefs } from 'pinia';
+import { router } from '@/helpers';
 
 const schema = Yup.object().shape({
   login: Yup.string().required('login is required'),
@@ -53,11 +55,12 @@ const schema = Yup.object().shape({
 });
 
 const adminStore = useAdminStore();
-const user = ref(await adminStore.getById(1))
+const user = ref(await adminStore.getUserToEdit())
 
 function onSubmit({ setErrors }) {
-  return adminStore.edit(user.value)
+  adminStore.edit(user.value)
   //   .catch(error => setErrors({ apiError: error }));
+  router.push('/admin')
 }
 
 </script>
