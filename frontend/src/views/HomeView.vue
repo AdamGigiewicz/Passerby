@@ -1,7 +1,7 @@
 <template>
   <div class="password-change">
     <h1>Hi!</h1>
-            <button class="btn btn-primary" @click="changePassword()">Change password</button>
+    <button class="btn btn-primary" @click="changePassword()">Change password</button>
   </div>
 </template>
 

@@ -41,14 +41,14 @@
 import { useAuthStore } from '@/stores/auth.store';
 import { Form, Field, SubmissionHandler } from 'vee-validate';
 import * as Yup from 'yup';
-import {router} from '@/helpers/router';
+import { router } from '@/helpers/router';
 const schema = Yup.object().shape({
   oldPassword: Yup.string().required('current password is required'),
   newPassword: Yup.string().required('new password is required'),
   confirmPassword: Yup.string().required('password confirmation is required').oneOf([Yup.ref('newPassword'), null], 'passwords must match')
 });
 
-const onSubmit: SubmissionHandler=(values: any, { setErrors: any }: any)=> {
+const onSubmit: SubmissionHandler = (values: any, { setErrors: any }: any) => {
   const { oldPassword, newPassword } = values;
   useAuthStore().editPassword(oldPassword, newPassword)
   //  .catch(error => setErrors({ apiError: error }));

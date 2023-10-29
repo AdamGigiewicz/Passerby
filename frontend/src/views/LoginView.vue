@@ -39,9 +39,9 @@ const schema = Yup.object().shape({
   password: Yup.string().required('password is required')
 });
 
-const onSubmit: SubmissionHandler =(values: any, { setErrors: any }: any)=> {
+const onSubmit: SubmissionHandler = (values: any, { setErrors: any }: any) => {
   const { login, password } = values;
   return useAuthStore().signin(login, password)
-    //.catch(error => setErrors({ apiError: error }));
+  //.catch(error => setErrors({ apiError: error }));
 }
 </script>

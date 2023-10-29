@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { Form, Field, SubmissionHandler} from 'vee-validate';
+import { Form, Field, SubmissionHandler } from 'vee-validate';
 import { useAdminStore } from '@/stores/admin.store';
 import { router } from '@/helpers/router';
 import * as Yup from 'yup';
@@ -36,7 +36,7 @@ const schema = Yup.object().shape({
   password: Yup.string().required('password is required')
 });
 
-const onSubmit: SubmissionHandler =(values: any, { setErrors: any }: any)=> {
+const onSubmit: SubmissionHandler = (values: any, { setErrors: any }: any) => {
   const adminstore = useAdminStore();
   adminstore.add(values.login, values.password)
   //  .catch(error => setErrors({ apiError: error }));

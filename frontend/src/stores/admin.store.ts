@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { fetchWrapper } from '@/helpers/fetch-wrapper';
 import { ref } from 'vue';
-import {User} from '@/model/User';
+import { User } from '@/model/User';
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/admin`;
 

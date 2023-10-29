@@ -21,14 +21,14 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.setItem('token', tokenToSave);
   }
 
-  async function signin(login:string , password: string) {
+  async function signin(login: string, password: string) {
     const receivedToken = (await fetchWrapper.post(baseUrl, { login, password })).token;
     saveToken(receivedToken)
     loadToken();
     router.push(returnUrl.value || '/');
   }
 
-  async function editPassword(oldPassword: string , newPassword: string) {
+  async function editPassword(oldPassword: string, newPassword: string) {
     await fetchWrapper.put(baseUrl, { oldPassword, newPassword });
   }
 
@@ -38,5 +38,5 @@ export const useAuthStore = defineStore('auth', () => {
     router.push('/login');
   }
 
-  return { token, signin, editPassword, signout, returnUrl}
+  return { token, signin, editPassword, signout, returnUrl }
 });

@@ -57,7 +57,7 @@ const schema = Yup.object().shape({
 const adminStore = useAdminStore();
 const user = ref(await adminStore.getUserToEdit())
 
-const onSubmit: SubmissionHandler =(values: any, { setErrors: any }: any)=> {
+const onSubmit: SubmissionHandler = (values: any, { setErrors: any }: any) => {
   adminStore.edit(user.value)
   //   .catch(error => setErrors({ apiError: error }));
   router.push('/admin')
