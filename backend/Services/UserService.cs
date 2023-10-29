@@ -37,7 +37,7 @@ public class UserService : IUserService
     public void EditPassword(int userId, string oldPassword, string newPassword)
     {
         var user = _userRepository.FindById(userId);
-        if (user == null || user.isBlocked || !UserPasswordHelper.verifyPassword(oldPassword, user.password)) throw new IdentityException();
+        if (user == null || !UserPasswordHelper.verifyPassword(oldPassword, user.password)) throw new IdentityException();
         if (user.passwordCriteria && !UserPasswordHelper.validatePassword(newPassword)) throw new ValidationException();
         user.password = UserPasswordHelper.hashPassword(newPassword);
         _userRepository.Update(user);

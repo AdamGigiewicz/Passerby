@@ -20,7 +20,7 @@
           <label for="isAdmin" class="form-check-label">Admin</label>
         </div>
         <div class="form-group form-check">
-          <input type="checkbox" id="isBlocked" class="form-check-input" v-model="user.blocked" />
+          <input type="checkbox" id="isBlocked" class="form-check-input" v-model="user.isBlocked" />
           <label for="isBlocked" class="form-check-label">Blocked</label>
         </div>
         <div class="form-group form-check">
