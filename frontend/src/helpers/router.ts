@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
-import { useAuthStore } from '@/stores';
-import { HomeView, LoginView, AdminView, AddUser, EditUser} from '@/views';
+import { useAuthStore } from '@/stores/auth.store';
+import { HomeView, LoginView, AdminView,UserSettingsView, AddUser, EditUser} from '@/views';
 
 
 export const router = createRouter({
@@ -13,6 +12,7 @@ export const router = createRouter({
         { path: '/admin', component: AdminView },
         { path: '/edit', component: EditUser },
         { path: '/add', component: AddUser },
+        { path: '/password', component: UserSettingsView },
     ]
 });
 

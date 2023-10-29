@@ -24,7 +24,7 @@ public class UserController : ControllerBase
     }
 
     [AuthorizeUser]
-    [HttpPatch]
+    [HttpPut]
     public IActionResult EditPassword(UserChangePassword form)
     {
         _userService.EditPassword(GetUser().id, form.oldPassword, form.newPassword);

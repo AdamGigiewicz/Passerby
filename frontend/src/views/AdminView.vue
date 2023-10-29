@@ -29,26 +29,26 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useAdminStore } from '@/stores';
+import { useAdminStore } from '@/stores/admin.store';
 import { storeToRefs } from 'pinia';
-import {router} from '@/helpers';
+import { router } from '@/helpers/router';
 const adminStore = useAdminStore();
 const { users } = storeToRefs(adminStore);
 
 adminStore.getAll();
 
-function addUser(){
- router.push('/add')
+function addUser() {
+  router.push('/add')
 }
 
-function editUser(user) {
+function editUser(user: any) {
   adminStore.setUserToEdit(user.id);
   router.push('/edit')
 }
 
-function removeUser(user) {
+function removeUser(user: any) {
   adminStore.remove(user.id);
 }
 </script>

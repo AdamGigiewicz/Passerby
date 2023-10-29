@@ -40,14 +40,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
-import { Form, Field } from 'vee-validate';
+import { Form, Field, SubmissionHandler } from 'vee-validate';
 import * as Yup from 'yup';
 import { ref } from 'vue';
-import { useAdminStore } from '@/stores';
+import { useAdminStore } from '@/stores/admin.store';
 import { storeToRefs } from 'pinia';
-import { router } from '@/helpers';
+import { router } from '@/helpers/router';
 
 const schema = Yup.object().shape({
   login: Yup.string().required('login is required'),
@@ -57,7 +57,7 @@ const schema = Yup.object().shape({
 const adminStore = useAdminStore();
 const user = ref(await adminStore.getUserToEdit())
 
-function onSubmit({ setErrors }) {
+const onSubmit: SubmissionHandler =(values: any, { setErrors: any }: any)=> {
   adminStore.edit(user.value)
   //   .catch(error => setErrors({ apiError: error }));
   router.push('/admin')

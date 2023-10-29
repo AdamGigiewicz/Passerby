@@ -25,10 +25,10 @@
   </div>
 </template>
 
-<script setup>
-import { Form, Field } from 'vee-validate';
-import { useAdminStore } from '@/stores';
-import { router } from '@/helpers';
+<script setup lang="ts">
+import { Form, Field, SubmissionHandler} from 'vee-validate';
+import { useAdminStore } from '@/stores/admin.store';
+import { router } from '@/helpers/router';
 import * as Yup from 'yup';
 
 const schema = Yup.object().shape({
@@ -36,12 +36,10 @@ const schema = Yup.object().shape({
   password: Yup.string().required('password is required')
 });
 
-function onSubmit(values, { setErrors }) {
+const onSubmit: SubmissionHandler =(values: any, { setErrors: any }: any)=> {
   const adminstore = useAdminStore();
-  const { login, password } = values;
-
-  adminstore.add(login, password)
-    .catch(error => setErrors({ apiError: error }));
+  adminstore.add(values.login, values.password)
+  //  .catch(error => setErrors({ apiError: error }));
   router.push('/admin')
 }
 </script>

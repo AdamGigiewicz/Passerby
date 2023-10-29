@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
-import { fetchWrapper, router } from '@/helpers';
+import { fetchWrapper } from '@/helpers/fetch-wrapper';
+import { router } from '@/helpers/router';
 import { ref } from 'vue';
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/user`;
 
 export const useAuthStore = defineStore('auth', () => {
-  const token = ref(null);
+  const token = ref("");
   const returnUrl = ref();
   loadToken();
 
@@ -16,26 +17,26 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  function saveToken(tokenToSave) {
+  function saveToken(tokenToSave: string) {
     localStorage.setItem('token', tokenToSave);
   }
 
-  async function signin(login, password) {
+  async function signin(login:string , password: string) {
     const receivedToken = (await fetchWrapper.post(baseUrl, { login, password })).token;
     saveToken(receivedToken)
     loadToken();
     router.push(returnUrl.value || '/');
   }
 
-  async function editPassword(oldPassword, newPassword) {
-    await fetchWrapper.post(baseUrl, { oldPassword, newPassword });
+  async function editPassword(oldPassword: string , newPassword: string) {
+    await fetchWrapper.put(baseUrl, { oldPassword, newPassword });
   }
 
   function signout() {
-    token.value = null;
+    token.value = "";
     localStorage.removeItem('token');
     router.push('/login');
   }
 
-  return { token, signin, editPassword, signout }
+  return { token, signin, editPassword, signout, returnUrl}
 });

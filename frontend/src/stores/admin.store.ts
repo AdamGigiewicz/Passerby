@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { fetchWrapper } from '@/helpers';
+import { fetchWrapper } from '@/helpers/fetch-wrapper';
 import { ref } from 'vue';
+import {User} from '@/model/User';
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/admin`;
 
@@ -8,7 +9,7 @@ export const useAdminStore = defineStore('admin', () => {
   const users = ref()
   const userToEdit = ref();
 
-  async function add(login, password) {
+  async function add(login: string, password: string) {
     await fetchWrapper.post(baseUrl, { login, password });
     getAll();
   }
@@ -19,7 +20,7 @@ export const useAdminStore = defineStore('admin', () => {
       .then(fetchedUsers => users.value = fetchedUsers)
   }
 
-  async function setUserToEdit(id) {
+  async function setUserToEdit(id: number) {
     userToEdit.value = id;
   }
 
@@ -27,17 +28,16 @@ export const useAdminStore = defineStore('admin', () => {
     return getById(userToEdit.value)
   }
 
-  async function getById(id) {
+  async function getById(id: number) {
     return await fetchWrapper.get(`${baseUrl}/${id}`);
   }
 
-  async function edit(user) {
-    const { id, login, password, passwordCriteria, isAdmin, isBlocked } = user;
-    await fetchWrapper.put(baseUrl, { id, login, password, passwordCriteria, isAdmin, isBlocked });
+  async function edit(user: User) {
+    await fetchWrapper.put(baseUrl, user);
     getAll();
   }
 
-  async function remove(id) {
+  async function remove(id: number) {
     await fetchWrapper.delete(`${baseUrl}/${id}`, { id });
     getAll();
   }
