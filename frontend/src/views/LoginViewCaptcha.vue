@@ -3,7 +3,7 @@
         <h2>SIGN IN</h2>
         <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors }">
             <div class="form-group">
-                <label>login</label>
+                <label>Login</label>
                 <Field name="login" type="text" class="form-control" :class="{ 'is-invalid': errors.login }" />
                 <div class="invalid-feedback">{{ errors.login }}</div>
             </div>
@@ -15,9 +15,20 @@
                 <div>{{ randomNumbers.randomNumber1 }} / {{ randomNumbers.randomNumber2 }}</div>
             </div>
             <div class="form-group">
-                <label>one-time password</label>
+                <label>One-time password</label>
                 <Field name="password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
                 <div class="invalid-feedback">{{ errors.password }}</div>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <Field type="password" name="newPassword" class="form-control" :class="{ 'is-invalid': errors.newPassword }" />
+                <div class="invalid-feedback">{{ errors.newPassword }}</div>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <Field type="password" name="confirmPassword" class="form-control"
+                       :class="{ 'is-invalid': errors.confirmPassword }" />
+                <div class="invalid-feedback">{{ errors.confirmPassword }}</div>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary" :disabled="false">
@@ -40,7 +51,9 @@
 
     const schema = Yup.object().shape({
         login: Yup.string().required('login is required'),
-        password: Yup.string().required('password is required')
+        password: Yup.string().required('password is required'),
+        newPassword: Yup.string().required('new password is required'),
+        confirmPassword: Yup.string().required('password confirmation is required').oneOf([Yup.ref('newPassword'), null], 'passwords must match')
     });
 
     const generateRandomNumber = () => {
