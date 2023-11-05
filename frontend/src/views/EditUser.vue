@@ -24,6 +24,10 @@
           <label for="isBlocked" class="form-check-label">Blocked</label>
         </div>
         <div class="form-group form-check">
+          <input type="checkbox" id="hasToResetPassword" class="form-check-input" v-model="user.hasToResetPassword" />
+          <label for="hasToResetPassword" class="form-check-label">Has to reset password</label>
+        </div>
+        <div class="form-group form-check">
           <input type="checkbox" id="passwordCriteria" class="form-check-input" v-model="user.passwordCriteria" />
           <label for="passwordCriteria" class="form-check-label">Criteria</label>
         </div>

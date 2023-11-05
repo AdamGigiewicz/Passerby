@@ -32,6 +32,7 @@ public class AdminService : IAdminService
             isAdmin = false,
             isBlocked = false,
             passwordCriteria = true,
+            hasToResetPassword = true,
             password = UserPasswordHelper.hashPassword(credentials.password)
         };
         _userRepository.Save(user);
@@ -55,6 +56,7 @@ public class AdminService : IAdminService
         persistedUser.isAdmin = user.isAdmin;
         persistedUser.isBlocked = user.isBlocked;
         persistedUser.passwordCriteria = user.passwordCriteria;
+        persistedUser.hasToResetPassword = user.hasToResetPassword;
         persistedUser.login = user.login;
         persistedUser.password = UserPasswordHelper.hashPassword(user.password);
         _userRepository.Update(persistedUser);

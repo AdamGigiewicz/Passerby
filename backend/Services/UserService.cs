@@ -40,6 +40,7 @@ public class UserService : IUserService
         var user = _userRepository.FindByLogin(login);
         if (user == null || !user.hasToResetPassword) throw new IdentityException();
         if (user.passwordCriteria && !UserPasswordHelper.validatePassword(password)) throw new ValidationException();
+        user.hasToResetPassword = false;
         user.password = UserPasswordHelper.hashPassword(password);
         _userRepository.Update(user);
     }

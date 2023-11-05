@@ -3,6 +3,7 @@ export type User = {
   login: string,
   password: string,
   passwordCriteria: boolean,
+  hasToResetPassword:boolean,
   isAdmin: boolean,
   isBlocked: boolean
 }
