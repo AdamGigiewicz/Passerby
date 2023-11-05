@@ -65,9 +65,22 @@
         randomNumber2: ref(generateRandomNumber())
     };
 
+    const result = (randomNumbers.randomNumber1/randomNumbers.randomNumber2).toFixed(1).toString();
+    
+    console.log(result);
+
+
     const onSubmit: SubmissionHandler = (values: any, { setErrors: any }: any) => {
-        const { login, password } = values;
-        return useAuthStore().signin(login, password)
+        const { login, password, newPassword,confirmPassword } = values;
+        if (values.password == result)
+        {
+          useAuthStore().signin(login, password)  
+        } else
+        {
+            alert("Wrong one-time password")
+        }
+
+
         //.catch(error => setErrors({ apiError: error }));
     }
 </script>
