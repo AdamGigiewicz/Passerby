@@ -10,6 +10,7 @@ public interface IUserRepository
     void Save(User user);
     IEnumerable<User> FindAll();
     User FindById(int id);
+    User FindByLogin(string login);
     User FindByCredentials(string login, string password);
     void Update(User user);
     void Delete(User user);
@@ -39,8 +40,13 @@ public class UserRepository : IUserRepository
 
     public User FindById(int id)
     {
-        return _users.SingleOrDefault(user => user.id == id);    }
+        return _users.SingleOrDefault(user => user.id == id);
+    }
 
+    public User FindByLogin(string login)
+    {
+        return _users.SingleOrDefault(user => user.login == login);
+    }
     public User FindByCredentials(string login, string password)
     {
         return _users.SingleOrDefault(user => user.login == login && UserPasswordHelper.verifyPassword(password, user.password));

@@ -8,6 +8,7 @@ public class User
     public string login { get; set; }
     public bool isAdmin { get; set; }
     public bool isBlocked { get; set; }
+    public bool hasToResetPassword { get; set; }
     public bool passwordCriteria { get; set; }
     public string password { get; set; }
 }

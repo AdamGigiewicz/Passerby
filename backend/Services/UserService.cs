@@ -13,6 +13,7 @@ using WebApi.Exceptions;
 public interface IUserService
 {
     LoggedUser SignIn(string login, string password);
+    void ResetPassword(string login, string password);
     void EditPassword(int userId, string oldPassword, string newPassword);
 }
 
@@ -32,6 +33,15 @@ public class UserService : IUserService
         var user = _userRepository.FindByCredentials(login, password);
         if (user == null || user.isBlocked) throw new IdentityException();
         return new LoggedUser(generateJwtToken(user.id.ToString()));
+    }
+
+    public void ResetPassword(string login, string password)
+    {
+        var user = _userRepository.FindByLogin(login);
+        if (user == null || !user.hasToResetPassword) throw new IdentityException();
+        if (user.passwordCriteria && !UserPasswordHelper.validatePassword(password)) throw new ValidationException();
+        user.password = UserPasswordHelper.hashPassword(password);
+        _userRepository.Update(user);
     }
 
     public void EditPassword(int userId, string oldPassword, string newPassword)

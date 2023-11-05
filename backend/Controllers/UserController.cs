@@ -23,6 +23,13 @@ public class UserController : ControllerBase
         return Ok(_userService.SignIn(form.login, form.password));
     }
 
+    [HttpPatch]
+    public IActionResult ResetPassword(UserCredentials form)
+    {
+        _userService.ResetPassword(form.login, form.password);
+        return Ok();
+    }
+
     [AuthorizeUser]
     [HttpPut]
     public IActionResult EditPassword(UserChangePassword form)
