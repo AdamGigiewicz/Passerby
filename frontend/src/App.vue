@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import { useAuthStore } from '@/stores/auth.store';
-import Navbar from '@/components/Navbar.vue';
 import {storeToRefs} from 'pinia';
 
 const authStore = useAuthStore();
