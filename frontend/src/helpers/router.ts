@@ -6,6 +6,7 @@ import AdminView from '@/views/AdminView.vue';
 import UserSettingsView from '@/views/UserSettingsView.vue';
 import AddUser from '@/views/AddUser.vue';
 import EditUser from '@/views/EditUser.vue';
+import LoginViewCaptcha from '@/views/LoginViewCaptcha.vue';
 
 
 export const router = createRouter({
@@ -18,6 +19,8 @@ export const router = createRouter({
     { path: '/edit', component: EditUser },
     { path: '/add', component: AddUser },
     { path: '/password', component: UserSettingsView },
+    { path: '/onetimepassword', component: LoginViewCaptcha },
+
   ]
 });
 
