@@ -8,5 +8,7 @@ public class UserChangePassword
     public string oldPassword { get; set; }
 
     [Required]
+    public string token {get; set;}
+    [Required]
     public string newPassword { get; set; }
 }

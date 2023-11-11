@@ -34,6 +34,7 @@
         <div v-if="errors.apiError" class="alert alert-danger mt-3 mb-0">{{ errors.apiError }}</div>
       </template>
     </Form>
+    <button @click="recaptcha">Execute recaptcha</button>
   </div>
 </template>
 
@@ -42,15 +43,27 @@ import { useAuthStore } from '@/stores/auth.store';
 import { Form, Field, SubmissionHandler } from 'vee-validate';
 import * as Yup from 'yup';
 import { router } from '@/helpers/router';
+import { VueReCaptcha, useReCaptcha } from 'vue-recaptcha-v3'
 const schema = Yup.object().shape({
   oldPassword: Yup.string().required('current password is required'),
   newPassword: Yup.string().required('new password is required'),
   confirmPassword: Yup.string().required('password confirmation is required').oneOf([Yup.ref('newPassword'), null], 'passwords must match')
 });
 
-const onSubmit: SubmissionHandler = (values: any, { setErrors: any }: any) => {
+const { executeRecaptcha, recaptchaLoaded} = useReCaptcha();
+
+const recaptcha = async () => {
+  // (optional) Wait until recaptcha has been loaded.
+  await recaptchaLoaded()
+
+  // Execute reCAPTCHA with action "login".
+  return await executeRecaptcha('login') ;
+
+}
+const onSubmit: SubmissionHandler = async (values: any, { setErrors: any }: any) => {
   const { oldPassword, newPassword } = values;
-  useAuthStore().editPassword(oldPassword, newPassword)
+  const token = await recaptcha();
+  await useAuthStore().editPassword(oldPassword, newPassword, token)
   //  .catch(error => setErrors({ apiError: error }));
   router.push('/')
 }

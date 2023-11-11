@@ -18,6 +18,7 @@
         "pinia": "^2.0.13",
         "vee-validate": "^4.5.11",
         "vue": "^3.3.7",
+        "vue-recaptcha-v3": "^2.0.1",
         "vue-router": "^4.0.14",
         "yup": "^0.32.11"
     },

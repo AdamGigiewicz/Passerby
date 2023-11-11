@@ -5,9 +5,17 @@ export const fetchWrapper = {
   post: request('POST'),
   put: request('PUT'),
   patch: request('PATCH'),
-  delete: request('DELETE')
+  delete: request('DELETE'),
+  verifyCaptcha
 };
 
+function verifyCaptcha(token: string){
+  return fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `secret=6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe&response=${token}`,
+  })
+}
 function request(method: string) {
   return async (url: string, body?: object) => {
     const requestOptions: RequestInit = {

@@ -36,6 +36,7 @@ public class AdminService : IAdminService
             password = UserPasswordHelper.hashPassword(credentials.password)
         };
         _userRepository.Save(user);
+        Logger.LogAction("add user - success");
     }
 
     public IEnumerable<User> GetAll()
@@ -60,10 +61,12 @@ public class AdminService : IAdminService
         persistedUser.login = user.login;
         persistedUser.password = UserPasswordHelper.hashPassword(user.password);
         _userRepository.Update(persistedUser);
+        Logger.LogAction("edit user - success");
     }
 
     public void Delete(int id)
     {
         _userRepository.Delete(GetById(id));
+        Logger.LogAction("remove user - success");
     }
 }

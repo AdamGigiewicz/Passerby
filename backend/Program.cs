@@ -15,6 +15,7 @@ services.AddControllers(options => {
   options.Filters.Add<IdentityExceptionFilter>();
   options.Filters.Add<NotFoundExceptionFilter>();
   options.Filters.Add<ValidationExceptionFilter>();
+  options.Filters.Add<CaptchaExceptionFilter>();
 });
 
 services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("db"));

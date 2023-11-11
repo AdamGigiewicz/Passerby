@@ -32,6 +32,7 @@ public class UserService : IUserService
     {
         var user = _userRepository.FindByCredentials(login, password);
         if (user == null || user.isBlocked) throw new IdentityException();
+        Logger.LogAction(user.id, "login - success");
         return new LoggedUser(generateJwtToken(user.id.ToString()));
     }
 
@@ -42,6 +43,7 @@ public class UserService : IUserService
         if (user.passwordCriteria && !UserPasswordHelper.validatePassword(password)) throw new ValidationException();
         user.hasToResetPassword = false;
         user.password = UserPasswordHelper.hashPassword(password);
+        Logger.LogAction(user.id, "reset password - success");
         _userRepository.Update(user);
     }
 
@@ -51,6 +53,7 @@ public class UserService : IUserService
         if (user == null || !UserPasswordHelper.verifyPassword(oldPassword, user.password)) throw new IdentityException();
         if (user.passwordCriteria && !UserPasswordHelper.validatePassword(newPassword)) throw new ValidationException();
         user.password = UserPasswordHelper.hashPassword(newPassword);
+        Logger.LogAction(user.id, "change password - success");
         _userRepository.Update(user);
     }
 
@@ -61,7 +64,7 @@ public class UserService : IUserService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] { new Claim("id", userId) }),
-            Expires = DateTime.UtcNow.AddDays(7),
+            Expires = DateTime.UtcNow.AddHours(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);

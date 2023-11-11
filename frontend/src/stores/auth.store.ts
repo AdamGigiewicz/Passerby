@@ -31,8 +31,8 @@ export const useAuthStore = defineStore('auth', () => {
   async function resetPassword(login: string, password: string) {
     await fetchWrapper.patch(baseUrl, { login, password});
   }
-  async function editPassword(oldPassword: string, newPassword: string) {
-    await fetchWrapper.put(baseUrl, { oldPassword, newPassword });
+  async function editPassword(oldPassword: string, newPassword: string, token: string) {
+    await fetchWrapper.put(baseUrl, { oldPassword, newPassword, token});
   }
 
   function signout() {
