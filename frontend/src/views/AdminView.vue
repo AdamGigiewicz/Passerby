@@ -37,6 +37,7 @@ import { router } from '@/helpers/router';
 const adminStore = useAdminStore();
 const { users } = storeToRefs(adminStore);
 
+
 adminStore.getAll();
 
 function addUser() {
