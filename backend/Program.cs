@@ -42,6 +42,7 @@ using (var scope = app.Services.CreateScope())
         isAdmin = true,
         isBlocked = false,
         passwordCriteria = false,
+        files = "test,test2",
         password = UserPasswordHelper.hashPassword("test"),
     };
     db.Users.Add(user);

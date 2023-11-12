@@ -33,6 +33,7 @@ public class AdminService : IAdminService
             isBlocked = false,
             passwordCriteria = true,
             hasToResetPassword = true,
+            files = "",
             password = UserPasswordHelper.hashPassword(credentials.password)
         };
         _userRepository.Save(user);

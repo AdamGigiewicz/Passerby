@@ -15,6 +15,8 @@ public interface IUserService
     LoggedUser SignIn(string login, string password);
     void ResetPassword(string login, string password);
     void EditPassword(int userId, string oldPassword, string newPassword);
+    UserFiles GetFiles(int userId);
+    void EditFiles(int userId, string userFiles);
 }
 
 public class UserService : IUserService
@@ -57,6 +59,21 @@ public class UserService : IUserService
         _userRepository.Update(user);
     }
 
+    public UserFiles GetFiles(int userId)
+    {
+        var user = _userRepository.FindById(userId);
+        if (user == null) throw new IdentityException();
+        Logger.LogAction(user.id, "get files - success");
+        return new UserFiles(user.files);
+    }
+    public void EditFiles(int userId, string userFiles)
+    {
+        var user = _userRepository.FindById(userId);
+        if (user == null) throw new IdentityException();
+        user.files = userFiles; 
+        Logger.LogAction(user.id, "edit files - success");
+        _userRepository.Update(user);
+    }
     private string generateJwtToken(string userId)
     {
         var tokenHandler = new JwtSecurityTokenHandler();

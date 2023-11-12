@@ -11,6 +11,5 @@ public class User
     public bool hasToResetPassword { get; set; }
     public bool passwordCriteria { get; set; }
     public string password { get; set; }
-
     public string files { get; set; }
 }

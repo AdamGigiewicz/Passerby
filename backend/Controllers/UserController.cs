@@ -58,12 +58,19 @@ public class UserController : ControllerBase
         return (User)HttpContext.Items["User"];
     }
 
-    [HttpPatch("/files")]
-
-    public IActionResult
+    [HttpGet("files")]
+    [AuthorizeUser]
+    public IActionResult GetFiles()
     {
-
+      Console.WriteLine(GetUser().id);
+      return Ok(_userService.GetFiles(GetUser().id));
     }
-
+    [HttpPatch("files")]
+    [AuthorizeUser]
+    public IActionResult EditFiles(UserFiles userFiles)
+    {
+      _userService.EditFiles(GetUser().id, userFiles.files);
+      return Ok();
+    }
 }
 
