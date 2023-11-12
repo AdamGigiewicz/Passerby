@@ -36,19 +36,19 @@ public class UserController : ControllerBase
     [HttpPut]
     public IActionResult EditPassword(UserChangePassword form)
     {
-      HttpClient httpClient = new HttpClient();
+        HttpClient httpClient = new HttpClient();
 
-    var res = httpClient.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret=6LcG9AspAAAAAB_SHO_k5xoIbM2nfjQrs__ywzXc&response={form.token}").Result;
+        var res = httpClient.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret=6LcG9AspAAAAAB_SHO_k5xoIbM2nfjQrs__ywzXc&response={form.token}").Result;
 
-    string JSONres = res.Content.ReadAsStringAsync().Result;
-    Console.WriteLine(JSONres);
-    var node = JsonNode.Parse(JSONres); 
-    var success = (bool?)node["success"];
-    
-    if(success == null || success == false)
-    {
-      throw new CaptchaException(); 
-    }
+        string JSONres = res.Content.ReadAsStringAsync().Result;
+        Console.WriteLine(JSONres);
+        var node = JsonNode.Parse(JSONres);
+        var success = (bool?)node["success"];
+
+        if (success == null || success == false)
+        {
+            throw new CaptchaException();
+        }
         _userService.EditPassword(GetUser().id, form.oldPassword, form.newPassword);
         return Ok();
     }
@@ -57,4 +57,13 @@ public class UserController : ControllerBase
     {
         return (User)HttpContext.Items["User"];
     }
+
+    [HttpPatch("/files")]
+
+    public IActionResult
+    {
+
+    }
+
 }
+
