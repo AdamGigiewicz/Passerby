@@ -20,7 +20,11 @@ function openFiles() {
     router.push('/files')
   }
   else {
-    alert("execution limit exceeded")
+   console.log( useAuthStore().getKey());
+    var key = prompt("enter key to continue editing", "your license key");
+    if(key){
+      useAuthStore().unlock(key);
+    }
   }
 }
 </script>

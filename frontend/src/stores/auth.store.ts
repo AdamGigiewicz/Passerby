@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { fetchWrapper } from '@/helpers/fetch-wrapper';
 import { router } from '@/helpers/router';
 import { ref } from 'vue';
+import {encrypt, decrypt} from '@/composables/cipher'; 
 
 const baseUrl = `${import.meta.env.VITE_API_URL}/user`;
 
@@ -12,6 +13,23 @@ export const useAuthStore = defineStore('auth', () => {
   loadToken();
   loadExecutions();
 
+  function unlock(key: string){
+    if(decrypt(key, getShift()) == getSimpleToken()){ 
+      executions.value = 0;
+      saveExecutions;
+      alert("success: provided key was correct")
+    }
+    else{alert("failure: provided key was incorrect")}
+  }
+  function getKey(){
+    return encrypt(getSimpleToken(), getShift());
+  }
+  function getShift(){
+    return token.value.length % 26;
+  }
+  function getSimpleToken(){
+    return token.value.toLowerCase().replace(/[^a-zA-Z]/g, '');
+  }
   function loadExecutions() {
     const storedExecutions = localStorage.getItem('executions');
     if (storedExecutions != null) {
@@ -21,6 +39,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   function addExecution() {
     executions.value++;
+    saveExecutions();
+  }
+
+  function saveExecutions(){
+
     localStorage.setItem('executions', executions.value.toString())
   }
 
@@ -66,5 +89,5 @@ export const useAuthStore = defineStore('auth', () => {
     router.push('/login');
   }
 
-  return { addExecution, executions, token, signin, getFiles, setFiles, editPassword, signout, returnUrl, resetPassword }
+  return {unlock, getKey, addExecution, executions, token, signin, getFiles, setFiles, editPassword, signout, returnUrl, resetPassword }
 });
